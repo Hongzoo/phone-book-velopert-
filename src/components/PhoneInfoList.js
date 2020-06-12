@@ -10,7 +10,12 @@ class PhoneInfoList extends Component {
     onUpdate: () => console.warn('onUpdate not defined'),
   }
   
+  shouldComponentUpdate(nextProps, nextState) {
+    return nextProps.data !== this.props.data; // 다음 받아올 data값이 현재 data 랑 다른 배열일 때(그러니까 수정이 있었을때) true 설정하게 함 (이렇게 간단하게 비교가 가능한건 불변성의 법칙을 지켜줬기 때문이야)
+  }
+  
   render() {
+    console.log('render PhoneInfoList'); // App 컴포넌트의 상태가 업데이트 되면, 컴포넌트의 리렌더링이 발생하게 되고 -> 컴포넌트가 리렌더링되면 그 컴포넌트의 자식 컴포넌트도 리렌더링 됨. (App.js의 검색input 에 글씨를 쓸때마다 콘솔로그가 찍히는 걸 확인할 수 있음.) -> 실제로 변화는 없기 때문에 Virtual DOM에만 리렌더링 하겠지만 더 많은 데이터를 관리한다면 Virtual DOM에 렌더링 하는 자원도 아끼면 좋다. 그래서 위에 shouldComponentUpdate 를 추가한다.
     const { data, onRemove, onUpdate } = this.props;
     const list = data.map(
       info => (

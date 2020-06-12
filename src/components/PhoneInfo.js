@@ -59,7 +59,17 @@ class PhoneInfo extends Component {
     }
   }
   
+  shouldComponentUpdate(nextProps, nextState) {
+    // 수정 상태가 아니고, info 값이 같다면 리렌더링 안함
+    if (!this.state.editing && !nextState.editing && nextProps.info === this.props.info) {
+      return false;
+    }
+    // 나머지 경우엔 리렌더링 함
+    return true;
+  }
+  
   render() {
+    console.log('render PhoneInfo' + this.props.info.id); // 이 내용이 콘솔에 찍히는 걸 보면, 검색시 이미 검색되어서 노출중인 애들은 두고 새로 노출할 애만 더 그려주면 되는데, 전체적으로 다 새로 렌더링 함을 볼 수 있었다. 그래서 shouldComponentUpdate 를 추가해서 최적화 해보겠다.
     const style = {
       border: '1px solid black',
       padding: '8px',
